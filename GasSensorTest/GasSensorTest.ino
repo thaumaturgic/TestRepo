@@ -67,10 +67,15 @@
 ////////////////////////////////////////////////////////////// 
 
 #define R0_VALUE_IN_CLEAR_AIR 200 // Value that the ADC returns in clear air
+int speakerPin = 7;
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
+
+  tone(speakerPin, 440);
+  delay(1000);
+  noTone(speakerPin);
 }
 void loop()
 {
@@ -83,7 +88,17 @@ void loop()
 
   float averageSensorValue = sensorValue / 100.0; // This is the Rs value of the air. 
   float sensorVoltage = averageSensorValue * 5.0 / 1023.0; // 10 bit Analog precision @ 5 volts;
+
   
+  
+  if(sensorVoltage > 3.0)
+  {
+      tone(speakerPin, 440);
+  }
+  else
+  {
+      noTone(speakerPin);
+  }
 
   // Calculate the Rs / R0 ratio to determine if there is any concentration of smoke or gas in the air
   // OR just use the raw voltage / ADC value compared to an absolute threshold
